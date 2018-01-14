@@ -21,7 +21,7 @@ public class TodoService {
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
 
-    public TodoCreateResponse create(TodoCreateRequest todoCreateRequest) {
+    public String create(TodoCreateRequest todoCreateRequest) {
         final Optional<UserEntity> userEntity = Optional.ofNullable(userRepository.findOne(todoCreateRequest.getCreatedByUserUuid()));
 
         if(!userEntity.isPresent()) {
@@ -29,17 +29,15 @@ public class TodoService {
         }
 
         final TodoEntity todoEntity = buildTodoEntity(todoCreateRequest);
-        final String todoId = todoRepository.save(todoEntity).getId();
-        return TodoCreateResponse.builder().id(todoId).build();
+        return todoRepository.save(todoEntity).getId();
     }
 
-    public TodoListResponse getTodos(UUID id) {
+    public List<Todo> getTodos(UUID id) {
         final List<TodoEntity> todoEntities = todoRepository.findAllByCreatedByUser(id.toString());
-        final List<Todo> todos = todoEntities.stream().parallel().map(this::convert).collect(Collectors.toList());
-        return new TodoListResponse(todos);
+        return todoEntities.stream().parallel().map(this::convert).collect(Collectors.toList());
     }
 
-    public TodoUpdateResponse update(TodoUpdateRequest todoUpdateRequest, UUID todoId) {
+    public String update(TodoUpdateRequest todoUpdateRequest, UUID todoId) {
         final Optional<TodoEntity> optiponalTodoEntity = Optional.ofNullable(todoRepository.findOne(todoId.toString()));
 
         if (!optiponalTodoEntity.isPresent()) {
@@ -51,7 +49,7 @@ public class TodoService {
         todoEntity.setTitle(todoUpdateRequest.getTitle());
         todoEntity.setDescription(todoUpdateRequest.getDescription());
         todoRepository.save(todoEntity);
-        return TodoUpdateResponse.builder().id(todoId.toString()).build();
+        return todoId.toString();
     }
 
     public void delete(UUID id) {

@@ -3,12 +3,14 @@ package com.data.service;
 import com.data.model.exception.AlreadyExistsException;
 import com.data.model.exception.UserNotFoundException;
 import com.data.model.exception.WrongPasswordException;
+import com.data.model.todo.Todo;
 import com.data.model.user.*;
 import com.data.persistence.entity.UserEntity;
 import com.data.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,6 +18,7 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TodoService todoService;
 
     public UserSignUpResponse register(UserSignUpRequest userSignUpRequest) {
 
@@ -45,10 +48,11 @@ public class UserService {
             throw new WrongPasswordException();
         }
 
+        final List<Todo> todos = todoService.getTodos(UUID.fromString(userEntity.getId()));
+
         return UserLoginResponse.builder()
                 .id(userEntity.getId())
-                //TODO add todos
-                //.todoList()
+                .todoList(todos)
                 .status(UserStatusEnum.of(userEntity.getStatus()))
                 .build();
     }

@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
@@ -31,11 +32,14 @@ public class UserServiceTest {
     @Mock
     private UserRepository mockUserRepository;
 
+    @Mock
+    private TodoService mockTodoService;
+
     private UserService userService;
 
     @Before
     public void setUp() throws Exception {
-        userService = new UserService(mockUserRepository);
+        userService = new UserService(mockUserRepository, mockTodoService);
     }
 
     @Test
@@ -73,7 +77,7 @@ public class UserServiceTest {
     @Test
     public void loginShouldThrowUserNotFoundExceptionIfOptionalUserEntityIsPresent() {
         //given
-        final UserLoginRequest userLoginRequest = new UserLoginRequest("asdf@hotmail.com","asdf");
+        final UserLoginRequest userLoginRequest = new UserLoginRequest("asdf@hotmail.com", "asdf");
 
         //when
         when(mockUserRepository.findByEmail(userLoginRequest.getEmail())).thenReturn(Optional.ofNullable(null));
@@ -90,7 +94,7 @@ public class UserServiceTest {
     @Test
     public void loginShouldThrowWrongPasswordExceptionWhenUserLoginRequestPasswordIsNotEqualsToUserEntityPassword() {
         //given
-        final UserLoginRequest userLoginRequest = new UserLoginRequest("asdf@hotmail.com","asdf");
+        final UserLoginRequest userLoginRequest = new UserLoginRequest("asdf@hotmail.com", "asdf");
         final UserEntity userEntity = UserEntity.builder().password("adsdasd").build();
 
         //when
@@ -108,8 +112,8 @@ public class UserServiceTest {
     @Test
     public void loginShouldReturnUserLoginResponseWhichHasSameIdWithIdOfUserEntity() {
         //given
-        final UserLoginRequest userLoginRequest = new UserLoginRequest("asdf@hotmail.com","asdf");
-        final UserEntity userEntity = UserEntity.builder().status("ACTIVE").id("asdfg").password("asdf").build();
+        final UserLoginRequest userLoginRequest = new UserLoginRequest("asdf@hotmail.com", "asdf");
+        final UserEntity userEntity = UserEntity.builder().status("ACTIVE").id(UUID.randomUUID().toString()).password("asdf").build();
 
         //when
         when(mockUserRepository.findByEmail(userLoginRequest.getEmail())).thenReturn(Optional.ofNullable(userEntity));

@@ -68,11 +68,11 @@ public class TodoServiceTest {
         //when
         when(mockUserRepository.findOne(todoCreateRequest.getCreatedByUserUuid())).thenReturn(userEntity);
         when(mockTodoRepository.save(any(TodoEntity.class))).thenReturn(todoEntity);
-        final TodoCreateResponse todoCreateResponse = todoService.create(todoCreateRequest);
+        final String todoId = todoService.create(todoCreateRequest);
 
         //then
         verify(mockTodoRepository).save(any(TodoEntity.class));
-        assertNotNull(todoCreateResponse.getId());
+        assertNotNull(todoId);
     }
 
     @Test
@@ -87,10 +87,10 @@ public class TodoServiceTest {
 
         //when
         when(mockTodoRepository.findAllByCreatedByUser(userid.toString())).thenReturn(todoEntityList);
-        final TodoListResponse todoListResponse = todoService.getTodos(userid);
+        final List<Todo> todos = todoService.getTodos(userid);
 
         //then
-        assertEquals(todoEntityList.size(), todoListResponse.getTodoList().size());
+        assertEquals(todoEntityList.size(), todos.size());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class TodoServiceTest {
 
         //when
         when(mockTodoRepository.findOne(uuid.toString())).thenReturn(todoEntity);
-        final TodoUpdateResponse todoUpdateResponse = todoService.update(todoUpdateRequest, uuid);
+        todoService.update(todoUpdateRequest, uuid);
 
         //then
         verify(mockTodoRepository).save(any(TodoEntity.class));

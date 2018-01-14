@@ -19,19 +19,19 @@ public class TodoController {
     @RequestMapping(method = RequestMethod.POST, path = "/todos", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     private ResponseEntity<TodoCreateResponse> add(@RequestBody TodoCreateRequest todoCreateRequest) {
-        final TodoCreateResponse todoCreateResponse = todoService.create(todoCreateRequest);
-        return new ResponseEntity<>(todoCreateResponse, HttpStatus.CREATED);
+        final String todoId = todoService.create(todoCreateRequest);
+        return new ResponseEntity<>(TodoCreateResponse.builder().id(todoId).build(), HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/todos/{id}")
     public TodoListResponse get(@PathVariable("id") UUID id) {
-        return todoService.getTodos(id);
+        return new TodoListResponse(todoService.getTodos(id));
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/todos/{id}")
     public ResponseEntity<TodoUpdateResponse> update(@PathVariable("id") UUID id, @RequestBody TodoUpdateRequest todoUpdateRequest) {
-        TodoUpdateResponse todoUpdateResponse = todoService.update(todoUpdateRequest, id);
-        return new ResponseEntity<>(todoUpdateResponse, HttpStatus.OK);
+        final String todoId = todoService.update(todoUpdateRequest, id);
+        return new ResponseEntity<>(TodoUpdateResponse.builder().id(todoId).build(), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/todos/{id}")

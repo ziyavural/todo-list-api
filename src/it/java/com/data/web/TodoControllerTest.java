@@ -1,7 +1,6 @@
 package com.data.web;
 
 import com.data.TestUtil;
-import com.data.model.todo.TodoCreateResponse;
 import com.data.model.todo.TodoUpdateResponse;
 import com.data.service.TodoService;
 import org.junit.Before;
@@ -39,17 +38,17 @@ public class TodoControllerTest {
     public void add() throws Exception {
         //given
         String jsonStr = TestUtil.readFile("json/controller/todoCreateRequest.json");
-        final TodoCreateResponse todoCreateResponse = TodoCreateResponse.builder().id("asdsad-bdacdsfd-dasdasd").build();
+        final String todoId = "abc-def";
 
         //when
-        when(mockTodoService.create(any())).thenReturn(todoCreateResponse);
+        when(mockTodoService.create(any())).thenReturn(todoId);
 
         //then
         mockMvc.perform(RestDocumentationRequestBuilders.post("/todos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonStr))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is("asdsad-bdacdsfd-dasdasd")));
+                .andExpect(jsonPath("$.id", is("abc-def")));
     }
 
     @Test
@@ -60,7 +59,7 @@ public class TodoControllerTest {
         final UUID id = UUID.randomUUID();
 
         //when
-        when(mockTodoService.update(any(), any())).thenReturn(todoUpdateResponse);
+        when(mockTodoService.update(any(), any())).thenReturn(id.toString());
 
         //then
         mockMvc.perform(RestDocumentationRequestBuilders.put("/todos/{id}", id)

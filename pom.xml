@@ -18,6 +18,7 @@
 
     <groupId>com.212data</groupId>
     <artifactId>todo-list-api</artifactId>
+    <packaging>jar</packaging>
     <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
@@ -51,4 +52,43 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.4.0.905</version>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.22.0</version>
+                <configuration>
+                    <images>
+                        <filter>
+                            <name>${project.artifactId}:${project.version}</name>
+                            <build>
+                                <from>maven:3.3.3-jdk-8</from>
+                                <assembly>
+                                    <targetDir>/opt/jar</targetDir>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                <cmd>java -Xmx256m -Xss256m -jar
+                                    /opt/jar/${project.artifactId}-${project.version}.${project.packaging}
+                                </cmd>
+                                <env>
+                                    <JARFILE>${project.artifactId}-${project.version}.${project.packaging}</JARFILE>
+                                </env>
+                            </build>
+                        </filter>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
