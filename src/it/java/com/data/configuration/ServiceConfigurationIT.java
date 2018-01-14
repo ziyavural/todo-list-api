@@ -29,8 +29,8 @@ public class ServiceConfigurationIT {
 
     @Test
     public void shouldLoadContext() {
-        assertThat("CancelCouponService could load successfully", userService, notNullValue());
-        assertThat("IddaaPlayCouponService could load successfully", todoService, notNullValue());
+        assertThat("UserService could load successfully", userService, notNullValue());
+        assertThat("TodoService could load successfully", todoService, notNullValue());
     }
 
 
