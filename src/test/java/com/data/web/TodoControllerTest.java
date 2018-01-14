@@ -1,7 +1,6 @@
 package com.data.web;
 
 import com.data.TestUtil;
-import com.data.model.todo.TodoUpdateResponse;
 import com.data.service.TodoService;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +54,6 @@ public class TodoControllerTest {
     public void update() throws Exception {
         //given
         String jsonStr = TestUtil.readFile("json/controller/todoUpdateRequest.json");
-        final TodoUpdateResponse todoUpdateResponse = TodoUpdateResponse.builder().id("asd-fdds-ddds-adas-dsd").build();
         final UUID id = UUID.randomUUID();
 
         //when
@@ -66,6 +64,6 @@ public class TodoControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonStr))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is("asd-fdds-ddds-adas-dsd")));
+                .andExpect(jsonPath("$.id", is(id.toString())));
     }
 }
