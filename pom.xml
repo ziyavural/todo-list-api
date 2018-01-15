@@ -19,7 +19,7 @@
     <groupId>com.212data</groupId>
     <artifactId>todo-list-api</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2</version>
 
     <dependencies>
         <dependency>
@@ -138,13 +138,26 @@
                                     <targetDir>/opt/jar</targetDir>
                                     <descriptorRef>artifact</descriptorRef>
                                 </assembly>
-                                <cmd>java -Xmx256m -Xss256m -jar
-                                    /opt/jar/${project.artifactId}-${project.version}.${project.packaging}
-                                </cmd>
+                                <cmd>java -Xmx256m -Xss256m -jar /opt/jar/${project.artifactId}-${project.version}.${project.packaging} </cmd>
                                 <env>
                                     <JARFILE>${project.artifactId}-${project.version}.${project.packaging}</JARFILE>
                                 </env>
                             </build>
+                            <run>
+                                <env>
+                                    <COUCHBASE_HOST>couchbase_db_1</COUCHBASE_HOST>
+                                </env>
+                                <links>
+                                    <link>couchbase_db_1:COUCHBASE_HOST</link>
+                                </links>
+                                <network>
+                                    <mode>custom</mode>
+                                    <name>couchbase_default</name>
+                                </network>
+                                <ports>
+                                    <port>8999:8913</port>
+                                </ports>
+                            </run>
                         </filter>
                     </images>
                 </configuration>
