@@ -1,6 +1,7 @@
 package com.data.configuration;
 
 import com.data.persistence.repository.BaseCouchBaseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
@@ -13,19 +14,22 @@ import java.util.List;
 @EnableCouchbaseRepositories(basePackageClasses = BaseCouchBaseRepository.class)
 public class CouchbaseConfiguration extends AbstractCouchbaseConfiguration {
 
+    @Autowired
+    private CouchbaseProperties couchbaseProperties;
+
     @Override
     protected List<String> getBootstrapHosts() {
-        return Arrays.asList("localhost");
+        return Arrays.asList(couchbaseProperties.getCouchbaseHost());
     }
 
     @Override
     protected String getBucketName() {
-        return "Administrator";
+        return couchbaseProperties.getCouchbaseBucket();
     }
 
     @Override
     protected String getBucketPassword() {
-        return "123456";
+        return couchbaseProperties.getCouchbaseBucketPassword();
     }
 
     @Override

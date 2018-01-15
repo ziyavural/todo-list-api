@@ -2,6 +2,7 @@ package com.data.persistence.entity;
 
 import com.couchbase.client.java.repository.annotation.Field;
 import com.couchbase.client.java.repository.annotation.Id;
+import com.data.model.user.UserStatusEnum;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,7 +27,7 @@ public class UserEntity {
     private String email;
 
     @Field
-    private String status;
+    private UserStatusEnum status;
 
     @Field
     private String firstName;

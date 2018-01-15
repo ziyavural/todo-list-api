@@ -3,10 +3,7 @@ package com.data.service;
 import com.data.model.exception.AlreadyExistsException;
 import com.data.model.exception.UserNotFoundException;
 import com.data.model.exception.WrongPasswordException;
-import com.data.model.user.UserLoginRequest;
-import com.data.model.user.UserLoginResponse;
-import com.data.model.user.UserSignUpRequest;
-import com.data.model.user.UserSignUpResponse;
+import com.data.model.user.*;
 import com.data.persistence.entity.UserEntity;
 import com.data.persistence.repository.UserRepository;
 import org.junit.Before;
@@ -42,7 +39,7 @@ public class UserServiceTest {
         userService = new UserService(mockUserRepository, mockTodoService);
     }
 
-    @Test
+    @Test(expected = AlreadyExistsException.class)
     public void regiterShouldThrowAlreadyExistsExceptionWhenEmailIsPresent() {
         //given
         final UserSignUpRequest userSignUpRequest = new UserSignUpRequest("ziya", "vural", "abc@gmail.com", "asdf");
@@ -50,12 +47,9 @@ public class UserServiceTest {
 
         //when
         when(mockUserRepository.findByEmail(userSignUpRequest.getEmail())).thenReturn(Optional.ofNullable(userEntity));
-        try {
-            userService.register(userSignUpRequest);
-            //code should not be reach here!!
-            fail();
-        } catch (AlreadyExistsException al) {
-        }
+        userService.register(userSignUpRequest);
+        //code should not be reach here!!
+        fail();
         //then
         verify(mockUserRepository).findByEmail(userSignUpRequest.getEmail());
     }
@@ -74,24 +68,21 @@ public class UserServiceTest {
         assertNotNull(userSignUpResponse.getUserId());
     }
 
-    @Test
+    @Test(expected = UserNotFoundException.class)
     public void loginShouldThrowUserNotFoundExceptionIfOptionalUserEntityIsPresent() {
         //given
         final UserLoginRequest userLoginRequest = new UserLoginRequest("asdf@hotmail.com", "asdf");
 
         //when
         when(mockUserRepository.findByEmail(userLoginRequest.getEmail())).thenReturn(Optional.ofNullable(null));
-        try {
-            userService.login(userLoginRequest);
-            //code should not be reach here!!
-            fail();
-        } catch (UserNotFoundException us) {
-        }
+        userService.login(userLoginRequest);
+        //code should not be reach here!!
+        fail();
         //then
         verify(mockUserRepository).findByEmail(userLoginRequest.getEmail());
     }
 
-    @Test
+    @Test(expected = WrongPasswordException.class)
     public void loginShouldThrowWrongPasswordExceptionWhenUserLoginRequestPasswordIsNotEqualsToUserEntityPassword() {
         //given
         final UserLoginRequest userLoginRequest = new UserLoginRequest("asdf@hotmail.com", "asdf");
@@ -99,12 +90,9 @@ public class UserServiceTest {
 
         //when
         when(mockUserRepository.findByEmail(userLoginRequest.getEmail())).thenReturn(Optional.ofNullable(userEntity));
-        try {
-            userService.login(userLoginRequest);
-            //code should not be reach here!!
-            fail();
-        } catch (WrongPasswordException us) {
-        }
+        userService.login(userLoginRequest);
+        //code should not be reach here!!
+        fail();
         //then
         verify(mockUserRepository).findByEmail(userLoginRequest.getEmail());
     }
@@ -113,7 +101,7 @@ public class UserServiceTest {
     public void loginShouldReturnUserLoginResponseWhichHasSameIdWithIdOfUserEntity() {
         //given
         final UserLoginRequest userLoginRequest = new UserLoginRequest("asdf@hotmail.com", "asdf");
-        final UserEntity userEntity = UserEntity.builder().status("ACTIVE").id(UUID.randomUUID().toString()).password("asdf").build();
+        final UserEntity userEntity = UserEntity.builder().status(UserStatusEnum.ACTIVE).id(UUID.randomUUID().toString()).password("asdf").build();
 
         //when
         when(mockUserRepository.findByEmail(userLoginRequest.getEmail())).thenReturn(Optional.ofNullable(userEntity));

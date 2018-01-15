@@ -45,4 +45,10 @@ public class TodoListApiControllerAdvice {
         log.error("TodoListApiControllerAdvice handle todoNotFoundException.|Msg={}", todoNotFoundException);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(Exception.class)
+    private ResponseEntity handle(final Exception exception) {
+        log.error("TodoListApi handle global exception.", exception);
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

@@ -42,20 +42,16 @@ public class TodoServiceTest {
         todoService = new TodoService(mockTodoRepository, mockUserRepository);
     }
 
-    @Test
+    @Test(expected = UserNotFoundException.class)
     public void createShouldThrowUserNotFoundExceptionIfUserEntityIsNotPresent() {
         //given
         final TodoCreateRequest todoCreateRequest = new TodoCreateRequest("12dasdas", "crossfit", "push press");
 
         //when
         when(mockUserRepository.findOne(todoCreateRequest.getCreatedByUserUuid())).thenReturn(null);
-        try {
-            todoService.create(todoCreateRequest);
-            //code should not be reach here!!
-            fail();
-        } catch (UserNotFoundException us) {
-
-        }
+        todoService.create(todoCreateRequest);
+        //code should not be reach here!!
+        fail();
     }
 
     @Test
@@ -93,7 +89,7 @@ public class TodoServiceTest {
         assertEquals(todoEntityList.size(), todos.size());
     }
 
-    @Test
+    @Test(expected = TodoNotFoundException.class)
     public void updateShouldThrowTodoNotFoundExceptionWhenOptionalTodoEntityIsNotPresent() {
         //given
         final TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest("12dasdas", "crossfit");
@@ -101,12 +97,9 @@ public class TodoServiceTest {
 
         //when
         when(mockTodoRepository.findOne(uuid.toString())).thenReturn(null);
-        try {
-            todoService.update(todoUpdateRequest, uuid);
-            //code should not be reach here!!
-            fail();
-        } catch (TodoNotFoundException t) {
-        }
+        todoService.update(todoUpdateRequest, uuid);
+        //code should not be reach here!!
+        fail();
     }
 
     @Test

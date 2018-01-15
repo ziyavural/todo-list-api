@@ -53,7 +53,7 @@ public class UserService {
         return UserLoginResponse.builder()
                 .id(userEntity.getId())
                 .todoList(todos)
-                .status(UserStatusEnum.of(userEntity.getStatus()))
+                .status(userEntity.getStatus())
                 .build();
     }
 
@@ -61,7 +61,7 @@ public class UserService {
         return UserEntity.builder()
                 .id(UUID.randomUUID().toString())
                 .email(userSignUpRequest.getEmail())
-                .status(UserStatusEnum.ACTIVE.getState())
+                .status(UserStatusEnum.ACTIVE)
                 .firstName(userSignUpRequest.getFirstName())
                 .lastName(userSignUpRequest.getLastName())
                 .password(userSignUpRequest.getPassword())
