@@ -19,7 +19,7 @@
     <groupId>com.212data</groupId>
     <artifactId>todo-list-api</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 
     <dependencies>
         <dependency>
