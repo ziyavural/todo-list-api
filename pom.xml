@@ -145,10 +145,10 @@
                             </build>
                             <run>
                                 <env>
-                                    <COUCHBASE_HOST>couchbase_db_1</COUCHBASE_HOST>
+                                    <COUCHBASE_HOST>todolistapi_db_1</COUCHBASE_HOST>
                                 </env>
                                 <links>
-                                    <link>couchbase_db_1:COUCHBASE_HOST</link>
+                                    <link>todolistapi_db_1:COUCHBASE_HOST</link>
                                 </links>
                                 <network>
                                     <mode>custom</mode>
