@@ -46,7 +46,6 @@ public class TodoService {
 
         final TodoEntity todoEntity = optiponalTodoEntity.get();
 
-        todoEntity.setTitle(todoUpdateRequest.getTitle());
         todoEntity.setDescription(todoUpdateRequest.getDescription());
         todoRepository.save(todoEntity);
         return todoId.toString();
@@ -66,14 +65,12 @@ public class TodoService {
                 .creationTime(now)
                 .description(todoCreateRequest.getDescription())
                 .modificationTime(now)
-                .title(todoCreateRequest.getTitle())
                 .build();
     }
 
     private Todo convert(TodoEntity todoEntity) {
         return Todo.builder()
                 .id(todoEntity.getId())
-                .title(todoEntity.getTitle())
                 .description(todoEntity.getDescription())
                 .creationDate(todoEntity.getCreationTime())
                 .modifiedDate(todoEntity.getModificationTime())

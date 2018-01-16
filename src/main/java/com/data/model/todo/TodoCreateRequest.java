@@ -8,6 +8,5 @@ import lombok.RequiredArgsConstructor;
 public class TodoCreateRequest {
 
     private final String createdByUserUuid;
-    private final String title;
     private final String description;
 }

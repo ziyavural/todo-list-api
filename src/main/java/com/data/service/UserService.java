@@ -52,7 +52,6 @@ public class UserService {
 
         return UserLoginResponse.builder()
                 .id(userEntity.getId())
-                .todoList(todos)
                 .status(userEntity.getStatus())
                 .build();
     }

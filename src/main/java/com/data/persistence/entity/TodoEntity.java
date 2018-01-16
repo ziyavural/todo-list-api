@@ -34,7 +34,4 @@ public class TodoEntity {
 
     @Field
     private LocalDateTime modificationTime;
-
-    @Field
-    private String title;
 }

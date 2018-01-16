@@ -57,7 +57,7 @@ public class UserControllerTest {
     public void login() throws Exception {
         //given
         String jsonStr = TestUtil.readFile("json/controller/userLoginRequest.json");
-        final UserLoginResponse userLoginResponse = UserLoginResponse.builder().id("asda12312asd").status(UserStatusEnum.ACTIVE).todoList(null).build();
+        final UserLoginResponse userLoginResponse = UserLoginResponse.builder().id("asda12312asd").status(UserStatusEnum.ACTIVE).build();
 
         //when
         when(mockUserService.login(any())).thenReturn(userLoginResponse);

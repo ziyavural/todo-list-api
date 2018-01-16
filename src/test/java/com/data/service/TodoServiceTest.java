@@ -45,7 +45,7 @@ public class TodoServiceTest {
     @Test(expected = UserNotFoundException.class)
     public void createShouldThrowUserNotFoundExceptionIfUserEntityIsNotPresent() {
         //given
-        final TodoCreateRequest todoCreateRequest = new TodoCreateRequest("12dasdas", "crossfit", "push press");
+        final TodoCreateRequest todoCreateRequest = new TodoCreateRequest("12dasdas", "push press");
 
         //when
         when(mockUserRepository.findOne(todoCreateRequest.getCreatedByUserUuid())).thenReturn(null);
@@ -57,7 +57,7 @@ public class TodoServiceTest {
     @Test
     public void createShouldInvokeSaveIfUserEntityIsPresent() {
         //given
-        final TodoCreateRequest todoCreateRequest = new TodoCreateRequest("12dasdas", "crossfit", "push press");
+        final TodoCreateRequest todoCreateRequest = new TodoCreateRequest("12dasdas", "push press");
         final UserEntity userEntity = UserEntity.builder().build();
         final TodoEntity todoEntity = TodoEntity.builder().id("asdf").build();
 
@@ -75,10 +75,10 @@ public class TodoServiceTest {
     public void todoSizeOfTodoListResponseShouldBeEqualToSizeOfTodoEntities() {
         //given
         final UUID userid = UUID.randomUUID();
-        final TodoEntity todoEntity = TodoEntity.builder().id("asdf").title("asd").description("adsd").creationTime(LocalDateTime.now()).modificationTime(LocalDateTime.now()).build();
-        final TodoEntity todoEntity2 = TodoEntity.builder().id("asdf").title("asd").description("adsd").creationTime(LocalDateTime.now()).modificationTime(LocalDateTime.now()).build();
-        final TodoEntity todoEntity3 = TodoEntity.builder().id("asdf").title("asd").description("adsd").creationTime(LocalDateTime.now()).modificationTime(LocalDateTime.now()).build();
-        final TodoEntity todoEntity4 = TodoEntity.builder().id("asdf").title("asd").description("adsd").creationTime(LocalDateTime.now()).modificationTime(LocalDateTime.now()).build();
+        final TodoEntity todoEntity = TodoEntity.builder().id("asdf").description("adsd").creationTime(LocalDateTime.now()).modificationTime(LocalDateTime.now()).build();
+        final TodoEntity todoEntity2 = TodoEntity.builder().id("asdf").description("adsd").creationTime(LocalDateTime.now()).modificationTime(LocalDateTime.now()).build();
+        final TodoEntity todoEntity3 = TodoEntity.builder().id("asdf").description("adsd").creationTime(LocalDateTime.now()).modificationTime(LocalDateTime.now()).build();
+        final TodoEntity todoEntity4 = TodoEntity.builder().id("asdf").description("adsd").creationTime(LocalDateTime.now()).modificationTime(LocalDateTime.now()).build();
         final List<TodoEntity> todoEntityList = Lists.newArrayList(todoEntity, todoEntity2, todoEntity3, todoEntity4);
 
         //when

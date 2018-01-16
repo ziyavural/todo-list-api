@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 public class Todo {
 
     private String id;
-    private String title;
     private String description;
     private LocalDateTime creationDate;
     private LocalDateTime modifiedDate;
